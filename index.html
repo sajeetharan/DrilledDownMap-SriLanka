@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1 ,user-scalable=no, maximum-scale=1,width=device-width"/>
+    <title>{{title}}</title>
+ 
+    </head>
+
+<body layout="column">
+
+<div id="container"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<script src="http://code.highcharts.com/maps/highmaps.js"></script>
+<script src="http://code.highcharts.com/maps/modules/drilldown.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/world-continents.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/asia.js"></script>
+
+<script src="http://code.highcharts.com/mapdata/custom/oceania.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/europe.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/north-america.js"></script>
+<script src="http://code.highcharts.com/mapdata/custom/south-america.js"></script>
+<script src="srilanka.js"></script>
+<script>
+$(function() {
+
+  // Initiate the chart
+  $('#container').highcharts('Map', {
+    title: {
+      text: ' '
+    },
+
+    chart: {
+      events: {
+
+        drilldown: function(e) {
+          // alert(e.point.name);
+          if (!e.seriesOptions) {
+            //alert(e.point);
+            var chart = this,
+              pointWithLatLon = function(point, latLon) {
+                return Highcharts.merge(point, chart.transformFromLatLon(latLon,
+                  Highcharts.maps['custom/world']['hc-transform']['default']));
+              };
+
+            var continent;
+            var contName;
+            switch (e.point.name) {
+              case "Asia":
+                chart.addSeriesAsDrilldown(e.point, {
+                  mapData: Highcharts.maps['custom/asia'],
+                  joinBy: 'hc-key',
+                  click: function() {
+                    alert('Hello');
+                  },
+                  data: [
+		  {
+                    'hc-key': 'lk',
+                    value: 1426178251139.9998 
+ ,
+                    drilldown: true
+                  } ] 
+
+                });
+                break;
+              case "Sri Lanka":
+                chart.addSeriesAsDrilldown(e.point, {
+                  mapData: Highcharts.maps['countries/lk/lk-all'],
+                  joinBy: 'hc-key',
+                  click: function() {
+                    alert('Hello');
+                  },
+                  data: [   {
+            "hc-key": "lk-gq",
+            "value": 106927260
+        },{
+            "hc-key": "lk-mb",
+            "value": 42620081	
+        },
+
+	 {
+            "hc-key": "lk-pr",
+            "value": 305456772
+        }, {
+            "hc-key": "lk-tc",
+            "value": 67864901
+        },
+ {
+            "hc-key": "lk-hb",
+            "value": 3002188        },
+
+ {
+            "hc-key": "lk-kg",
+            "value": 92177552
+        }
+                  ] 
+
+                });
+                break;
+              case "Europe":
+                chart.addSeriesAsDrilldown(e.point, {
+                  mapData: Highcharts.maps['custom/europe'],
+                  joinBy: 'hc-key',
+                  data: [ ],
+                  dataLabels: {
+                    enabled: true,
+                    formatter: function() {
+                      return this.point.value + '%';
+                    }
+                  }
+
+                });
+                break;
+            }
+
+
+
+            chart.addSeries({
+              id: 'cities',
+              name: 'Cities',
+              type: 'mappoint',
+              color: 'black',
+              marker: {
+                symbol: 'circle'
+              }
+            });
+          }
+        }
+      }
+    },
+    mapNavigation: {
+      enabled: true,
+      buttonOptions: {
+        verticalAlign: 'bottom'
+      }
+    },
+    colorAxis: {
+      min: 1,
+      max: 100,
+      minColor: '#E0D2F8',
+      maxColor: '#280D58'
+    },
+    plotOptions: {
+      series: {
+        point: {
+          events: {
+            click: function() {
+              if (this.name) {
+                //	alert(this.name);
+              }
+            }
+          }
+        }
+      }
+    },
+    legend: {
+      enabled: false
+    },
+    credits: {
+      enabled: false
+    },
+    series: [{
+      name: 'World',
+      data: [ 
+
+        {
+          'hc-key': 'as',
+          drilldown: true,
+          value: 1426178251139.9998 
+        } 
+
+      ],
+      mapData: Highcharts.maps['custom/world-continents'],
+      joinBy: 'hc-key'
+      
+    }]
+  });
+});
+
+  
+</script>
+
+</html>
